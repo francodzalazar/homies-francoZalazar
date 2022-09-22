@@ -1,7 +1,7 @@
 let producto = parseInt(
-  prompt("Que vas a consumir \n1 Hamburguesa \n2 Lomito \n3 Papas con beacon")
+  prompt("¿Que vas a consumir? \n1 Hamburguesa \n2 Lomito \n3 Papas con beacon")
 );
-let extras = prompt("Desea agregar extras?");
+let extras = prompt("¿Desea agregar extras? \nSi \nNo");
 let envio = parseInt(
   prompt(
     "Elige tu metodo de retiro: \n1 Retiro en el local \n2 Necesito que me lo envien"
@@ -10,7 +10,15 @@ let envio = parseInt(
 
 function costoExtras(extras) {
   if (extras == "SI" || extras == "Si" || extras == "si") {
-    valorExtras = 50;
+    let extras = parseInt(prompt("Ingrese la cantidad de extras a agregar"));
+    console.log(extras);
+    if (extras != Number) {
+      alert("Opcion no disponible");
+    } else {
+      for (let i = 0; i <= extras; i++) {
+        valorExtras = i * 50;
+      }
+    }
   } else {
     valorExtras = 0;
   }

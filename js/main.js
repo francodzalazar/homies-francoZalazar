@@ -10,13 +10,16 @@ let envio = parseInt(
 
 function costoExtras(extras) {
   if (extras == "SI" || extras == "Si" || extras == "si") {
-    let extras = parseInt(prompt("Ingrese la cantidad de extras a agregar"));
-    console.log(extras);
-    if (extras != Number) {
-      alert("Opcion no disponible");
-    } else {
-      for (let i = 0; i <= extras; i++) {
-        valorExtras = i * 50;
+    for (let i = 3; i > 0; i--) {
+      let extras = parseInt(
+        prompt("Ingrese la cantidad de extras a agregar (Max 5.)")
+      );
+      if (extras <= 5) {
+        for (let i = 0; i <= extras; i++) {
+          valorExtras = i * 50;
+        }
+      } else {
+        alert("Opcion invalida, te quedan " + (i - 1) + " intentos");
       }
     }
   } else {
@@ -39,7 +42,6 @@ let precioHamburguesa = 1000;
 let precioLomito = 1200;
 let precioPapas = 850;
 let precioExtras = costoExtras(extras);
-console.log(precioExtras);
 let precioEnvio = costoEnvio(envio);
 
 switch (producto) {

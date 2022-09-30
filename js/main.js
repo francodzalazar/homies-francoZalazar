@@ -89,14 +89,18 @@
 //   alert("Opcion no disponible");
 // }
 // Fin condicionales
-
+function clasificar(producto, tipo, array) {
+  if (tipo == "comida") {
+    array.push(producto);
+  }
+}
 // Arrays
 const comidas = [];
 // Fin Arrays
 
 // Clases
 class Producto {
-  constructor(nombre, clasificacion, tipo, precio){
+  constructor(nombre, clasificacion, tipo, precio) {
     this.nombre = nombre.toUpperCase();
     this.clasificacion = clasificacion;
     this.tipo = tipo;
@@ -106,9 +110,30 @@ class Producto {
 // Fin clases
 
 // Objetos
-const producto1 = new Producto ("hamburguesa simple", "hamburguesa", "comida", 850);
-if (producto1.tipo == "comida") {
-  comidas.push(producto1);
-  console.log(comidas);
-}
+const producto1 = new Producto(
+  "hamburguesa simple",
+  "hamburguesa",
+  "comida",
+  850
+);
+const producto2 = new Producto(
+  "lomito simple",
+  "lomito",
+  "comida",
+  1050
+);
+const producto3 = new Producto(
+  "coca 500 ml",
+  "hamburguesa",
+  "bebida",
+  500
+);
 
+clasificar(producto1, producto1.tipo, comidas);
+clasificar(producto2, producto2.tipo, comidas);
+clasificar(producto3, producto3.tipo, comidas);
+console.log(comidas);
+
+for (const comida of comidas) {
+  console.log("Se agregó el producto "+comida.nombre+", su precio es "+comida.precio);
+}

@@ -5,7 +5,7 @@ function costoExtras(extras) {
       let extras = parseInt(
         prompt("Ingrese la cantidad de extras a agregar (Max 5.)")
       );
-      if (extras <= 5 && extras >=1) {
+      if (extras <= 5 && extras >= 1) {
         for (let i = 0; i <= extras; i++) {
           valorExtras = i * 50;
         }
@@ -89,3 +89,21 @@ if (producto > 0 && producto < 4) {
   alert("Opcion no disponible");
 }
 // Fin condicionales
+
+// Arrays
+// Fin Arrays
+
+// Clases
+class Producto {
+  constructor(nombre, clasificacion, tipo, precio){
+    this.nombre = nombre.toUpperCase();
+    this.clasificacion = clasificacion;
+    this.tipo = tipo;
+    this.precio = parseFloat(precio);
+  }
+}
+// Fin clases
+
+// Objetos
+const producto1 = new Producto ("hamburguesa simple", "hamburguesa", "comida", 850);
+

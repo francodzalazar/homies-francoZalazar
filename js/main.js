@@ -90,12 +90,15 @@
 // }
 // Fin condicionales
 function clasificar(producto, tipo, array) {
-  if (tipo == "comida") {
+  if (tipo.toLowerCase() == "comida") {
+    array.push(producto);
+  } else if (tipo.toLowerCase() == "bebida") {
     array.push(producto);
   }
 }
 // Arrays
 const comidas = [];
+const bebidas = [];
 // Fin Arrays
 
 // Clases
@@ -124,16 +127,20 @@ const producto2 = new Producto(
 );
 const producto3 = new Producto(
   "coca 500 ml",
-  "hamburguesa",
+  "bebida sin alcohol",
   "bebida",
   500
 );
 
 clasificar(producto1, producto1.tipo, comidas);
 clasificar(producto2, producto2.tipo, comidas);
-clasificar(producto3, producto3.tipo, comidas);
+clasificar(producto3, producto3.tipo, bebidas);
 console.log(comidas);
+console.log(bebidas);
 
 for (const comida of comidas) {
   console.log("Se agregó el producto "+comida.nombre+", su precio es "+comida.precio);
+}
+for (const bebida of bebidas) {
+  console.log("Se agregó el producto "+bebida.nombre+", su precio es "+bebida.precio);
 }

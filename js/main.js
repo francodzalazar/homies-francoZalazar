@@ -121,5 +121,4 @@ while (validarEntrada) {
     }
   }
 }
-console.log(carrito);
 // Fin ciclos

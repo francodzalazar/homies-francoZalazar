@@ -15,27 +15,27 @@ function generarProducto(producto) {
         producto +
         " " +
         prompt(
-          "Elige una opcion \n1 Simple \n2 Doble \n3 Triple"
+          "Elige una opcion \n- Simple \n- Doble \n- Triple"
         ).toUpperCase();
       return hamburguesa;
     case "LOMITO":
       let lomito =
         producto +
         " " +
-        prompt("Elige una opcion \n1 Simple \n2 Completo").toUpperCase();
+        prompt("Elige una opcion \n- Simple \n- Completo").toUpperCase();
       return lomito;
     case "PAPAS":
       let papas =
         producto +
         " " +
-        prompt("Elige una opcion \n1 Cheddar \n2 Huevo").toUpperCase();
+        prompt("Elige una opcion \n- Cheddar \n- Huevo").toUpperCase();
       return papas;
     case "BEBIDA":
       let bebida =
         producto +
         " " +
         prompt(
-          "Elige una opcion \n1 Agua \n2 Gaseosa \n3 Cerveza"
+          "Elige una opcion \n- Agua \n- Coca \n- Cerveza"
         ).toUpperCase();
       return bebida;
 
@@ -85,10 +85,12 @@ let validarEntrada = true;
 // Ciclos
 while (validarEntrada) {
   let productoCliente = prompt(
-    "¿Que vas a consumir? \n1 Hamburguesa \n2 Lomito \n3 Papas \n4 Bebida"
+    "¿Que vas a consumir? \n- Hamburguesa \n- Lomito \n- Papas \n- Bebida"
   ).toUpperCase();
   agregarAlCarrito(generarProducto(productoCliente), stock, carrito);
+
   let nuevoProducto = prompt("Deseas agregar mas productos? SI - NO");
+
   if (nuevoProducto.toUpperCase() != "SI") {
     validarEntrada = false;
     if (
@@ -102,18 +104,22 @@ while (validarEntrada) {
           "Elige tu metodo de retiro: \n1 Retiro en el local \n2 Necesito que me lo envien"
         )
       );
+
       carrito.forEach((producto) => {
         alert(
           "Elegiste " + producto.nombre + " y su precio es " + producto.precio
         );
       });
+
       alert("El costo del envio es " + costoEnvio(envio));
+
       const total = carrito.reduce((acumulador, producto) => {
         return (acumulador += producto.precio);
       }, 0);
+
       alert("El total es " + precioTotal(total, costoEnvio(envio)));
     }
   }
 }
-
+console.log(carrito);
 // Fin ciclos

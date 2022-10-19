@@ -34,9 +34,7 @@ function generarProducto(producto) {
       let bebida =
         producto +
         " " +
-        prompt(
-          "Elige una opcion \n- Agua \n- Coca \n- Cerveza"
-        ).toUpperCase();
+        prompt("Elige una opcion \n- Agua \n- Coca \n- Cerveza").toUpperCase();
       return bebida;
 
     default:
@@ -51,74 +49,88 @@ function agregarAlCarrito(producto, stock, carrito) {
 // Fin funciones
 
 // Clases
-class Producto {
-  constructor(codigo, nombre, clasificacion, precio) {
-    this.codigo = codigo;
-    this.nombre = nombre.toUpperCase();
-    this.clasificacion = clasificacion;
-    this.precio = parseFloat(precio);
-  }
-}
-// Fin clases
+// class Producto {
+//   constructor(codigo, nombre, clasificacion, precio) {
+//     this.codigo = codigo;
+//     this.nombre = nombre.toUpperCase();
+//     this.clasificacion = clasificacion;
+//     this.precio = parseFloat(precio);
+//   }
+// }
+// // Fin clases
 
-// Arrays
-const stock = [
-  new Producto(1, "hamburguesa simple", "hamburguesa", 850),
-  new Producto(2, "hamburguesa doble", "hamburguesa", 950),
-  new Producto(3, "hamburguesa triple", "hamburguesa", 1050),
-  new Producto(4, "lomito simple", "lomito", 1050),
-  new Producto(5, "lomito completo", "lomito", 1150),
-  new Producto(6, "papas cheddar", "papas", 800),
-  new Producto(7, "papas huevo", "papas", 750),
-  new Producto(8, "bebida agua", "bebida", 500),
-  new Producto(9, "bebida coca", "bebida", 500),
-  new Producto(10, "bebida cerveza", "bebida", 600),
-];
-const carrito = [];
-// Fin Arrays
+// // Arrays
+// const stock = [
+//   new Producto(1, "hamburguesa simple", "hamburguesa", 850),
+//   new Producto(2, "hamburguesa doble", "hamburguesa", 950),
+//   new Producto(3, "hamburguesa triple", "hamburguesa", 1050),
+//   new Producto(4, "lomito simple", "lomito", 1050),
+//   new Producto(5, "lomito completo", "lomito", 1150),
+//   new Producto(6, "papas cheddar", "papas", 800),
+//   new Producto(7, "papas huevo", "papas", 750),
+//   new Producto(8, "bebida agua", "bebida", 500),
+//   new Producto(9, "bebida coca", "bebida", 500),
+//   new Producto(10, "bebida cerveza", "bebida", 600),
+// ];
+// const carrito = [];
+// // Fin Arrays
 
-// // Variables
-const total = "";
-let validarEntrada = true;
-// Fin variables
+// // // Variables
+// const total = "";
+// let validarEntrada = true;
+// // Fin variables
 
-// Ciclos
-while (validarEntrada) {
-  let productoCliente = prompt(
-    "¿Que vas a consumir? \n- Hamburguesa \n- Lomito \n- Papas \n- Bebida"
-  ).toUpperCase();
-  agregarAlCarrito(generarProducto(productoCliente), stock, carrito);
+// // Ciclos
+// while (validarEntrada) {
+//   let productoCliente = prompt(
+//     "¿Que vas a consumir? \n- Hamburguesa \n- Lomito \n- Papas \n- Bebida"
+//   ).toUpperCase();
+//   agregarAlCarrito(generarProducto(productoCliente), stock, carrito);
 
-  let nuevoProducto = prompt("Deseas agregar mas productos? SI - NO");
+//   let nuevoProducto = prompt("Deseas agregar mas productos? SI - NO");
 
-  if (nuevoProducto.toUpperCase() != "SI") {
-    validarEntrada = false;
-    if (
-      productoCliente == "HAMBURGUESA" ||
-      productoCliente == "LOMITO" ||
-      productoCliente == "PAPAS" ||
-      productoCliente == "BEBIDA"
-    ) {
-      let envio = parseInt(
-        prompt(
-          "Elige tu metodo de retiro: \n1 Retiro en el local \n2 Necesito que me lo envien"
-        )
-      );
+//   if (nuevoProducto.toUpperCase() != "SI") {
+//     validarEntrada = false;
+//     if (
+//       productoCliente == "HAMBURGUESA" ||
+//       productoCliente == "LOMITO" ||
+//       productoCliente == "PAPAS" ||
+//       productoCliente == "BEBIDA"
+//     ) {
+//       let envio = parseInt(
+//         prompt(
+//           "Elige tu metodo de retiro: \n1 Retiro en el local \n2 Necesito que me lo envien"
+//         )
+//       );
 
-      carrito.forEach((producto) => {
-        alert(
-          "Elegiste " + producto.nombre + " y su precio es " + producto.precio
-        );
-      });
+//       carrito.forEach((producto) => {
+//         alert(
+//           "Elegiste " + producto.nombre + " y su precio es " + producto.precio
+//         );
+//       });
 
-      alert("El costo del envio es " + costoEnvio(envio));
+//       alert("El costo del envio es " + costoEnvio(envio));
 
-      const total = carrito.reduce((acumulador, producto) => {
-        return (acumulador += producto.precio);
-      }, 0);
+//       const total = carrito.reduce((acumulador, producto) => {
+//         return (acumulador += producto.precio);
+//       }, 0);
 
-      alert("El total es " + precioTotal(total, costoEnvio(envio)));
-    }
-  }
-}
+//       alert("El total es " + precioTotal(total, costoEnvio(envio)));
+//     }
+//   }
+// }
 // Fin ciclos
+
+function reemplazarDiv(div1, div2) {
+  div1.classList.replace("div--visible", "div--invisible");
+  div2.classList.replace("div--invisible", "div--visible");
+}
+const divCards = document.querySelector("#divCards"),
+  divProductos = document.querySelector("#divProductos"),
+  divSecciones = document.querySelectorAll(".main__div--producto");
+
+divSecciones.forEach((elemento) =>
+  elemento.addEventListener("click", () =>
+    reemplazarDiv(divCards, divProductos)
+  )
+);

@@ -49,29 +49,79 @@ function agregarAlCarrito(producto, stock, carrito) {
 // Fin funciones
 
 // Clases
-// class Producto {
-//   constructor(codigo, nombre, clasificacion, precio) {
-//     this.codigo = codigo;
-//     this.nombre = nombre.toUpperCase();
-//     this.clasificacion = clasificacion;
-//     this.precio = parseFloat(precio);
-//   }
-// }
+class Producto {
+  constructor(nombre, clasificacion, precio, imagen) {
+    this.nombre = nombre.toUpperCase();
+    this.clasificacion = clasificacion;
+    this.precio = parseFloat(precio);
+    this.imagen = imagen;
+  }
+}
 // // Fin clases
 
 // // Arrays
-// const stock = [
-//   new Producto(1, "hamburguesa simple", "hamburguesa", 850),
-//   new Producto(2, "hamburguesa doble", "hamburguesa", 950),
-//   new Producto(3, "hamburguesa triple", "hamburguesa", 1050),
-//   new Producto(4, "lomito simple", "lomito", 1050),
-//   new Producto(5, "lomito completo", "lomito", 1150),
-//   new Producto(6, "papas cheddar", "papas", 800),
-//   new Producto(7, "papas huevo", "papas", 750),
-//   new Producto(8, "bebida agua", "bebida", 500),
-//   new Producto(9, "bebida coca", "bebida", 500),
-//   new Producto(10, "bebida cerveza", "bebida", 600),
-// ];
+const stock = [
+  new Producto(
+    "hamburguesa simple",
+    "hamburguesa",
+    850,
+    "assets/img/hamburguesas/hambur-simple.png"
+  ),
+  new Producto(
+    "hamburguesa doble",
+    "hamburguesa",
+    950,
+    "assets/img/hamburguesas/hambur-doble.png"
+  ),
+  new Producto(
+    "hamburguesa triple",
+    "hamburguesa",
+    1050,
+    "assets/img/hamburguesas/hambur-triple.png"
+  ),
+  new Producto(
+    "lomo simple",
+    "lomo",
+    1050,
+    "assets/img/lomos/lomo-simple.png"
+  ),
+  new Producto(
+    "lomo completo",
+    "lomo",
+    1150,
+    "assets/img/lomos/lomo-completo.png"
+  ),
+  new Producto(
+    "papas cheddar",
+    "papas",
+    800,
+    "assets/img/papas/papas-beacon.png"
+  ),
+  new Producto(
+    "papas huevo",
+    "papas",
+    750,
+    "assets/img/papas/papas-huevo.png"
+  ),
+  new Producto(
+    "agua saborizada de manzana 500 ml",
+    "bebida",
+    500,
+    "assets/img/bebidas/agua-mzna-500ml.png"
+  ),
+  new Producto(
+    "coca 500 ml",
+    "bebida",
+    500,
+    "assets/img/bebidas/coca-500ml.png"
+  ),
+  new Producto(
+    "pinta de cerveza",
+    "bebida",
+    600,
+    "assets/img/bebidas/cerveza-500ml.png"
+  ),
+];
 // const carrito = [];
 // // Fin Arrays
 
@@ -125,12 +175,53 @@ function reemplazarDiv(div1, div2) {
   div1.classList.replace("div--visible", "div--invisible");
   div2.classList.replace("div--invisible", "div--visible");
 }
+function rellenarDiv(div, productos) {
+  productos.forEach(producto => {
+    div.innerHTML += `<img src=${producto.imagen}> `
+  });
+  ;
+  return div
+}
 const divCards = document.querySelector("#divCards"),
   divProductos = document.querySelector("#divProductos"),
-  divSecciones = document.querySelectorAll(".main__div--producto");
+  divCategorias = document.querySelectorAll(".main__div--producto"),
+  divHamburguesa = document.querySelector("#divHamburguesa"),
+  divLomo = document.querySelector("#divLomo"),
+  divPapas = document.querySelector("#divPapas"),
+  divBebida = document.querySelector("#divBebida");
 
-divSecciones.forEach((elemento) =>
-  elemento.addEventListener("click", () =>
-    reemplazarDiv(divCards, divProductos)
-  )
+// divCategorias.forEach((elemento) =>
+//   elemento.addEventListener("click", () =>
+//     reemplazarDiv(divCards, divProductos)
+//   )
+// );
+
+const hamburguesas = stock.filter((producto) =>
+  producto.clasificacion.includes("hamburguesa")
 );
+const lomos = stock.filter((producto) =>
+  producto.clasificacion.includes("lomo")
+);
+const papas = stock.filter((producto) =>
+  producto.clasificacion.includes("papas")
+);
+const bebidas = stock.filter((producto) =>
+  producto.clasificacion.includes("bebida")
+);
+
+divHamburguesa.addEventListener("click", () =>
+  reemplazarDiv(divCards, rellenarDiv(divProductos, hamburguesas))
+);
+divLomo.addEventListener("click", () =>
+  reemplazarDiv(divCards, rellenarDiv(divProductos, lomos))
+);
+divPapas.addEventListener("click", () =>
+  reemplazarDiv(divCards, rellenarDiv(divProductos, papas))
+);
+divBebida.addEventListener("click", () =>
+  reemplazarDiv(divCards, rellenarDiv(divProductos, bebidas))
+);
+
+// );
+// let img = `<img src="assets/img/hamburguesas/hambur-simple.png" alt="hamburguesa-simple">`;
+// divProductos.innerHTML = img;

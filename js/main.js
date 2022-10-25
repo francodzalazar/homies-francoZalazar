@@ -1,7 +1,4 @@
 // Funciones
-function crearDiv(id) {
-  return document.getElementById(id);
-}
 function reemplazarDiv(array, clase) {
   array.forEach((element) => {
     element.classList.toggle(clase);
@@ -14,14 +11,14 @@ function rellenarDiv(div, productos) {
   });
   return div;
 }
-function seleccionarDiv(div, array) {
-  switch (div) {
+function seleccionarDiv(id) {
+  switch (id) {
     case 1:
-      return array[0];
+      return document.getElementById(id);
     case 2:
-      return array[1];
+      return document.getElementById(id);
     case 3:
-      return array[2];
+      return document.getElementById(id);
 
     default:
       break;
@@ -36,10 +33,14 @@ function mostrarProducto(div, producto) {
   <button id="botonSuma">+</button> 
   <input type="submit" id="enviarDatos" value="Agregar al carrito">
   </div>`;
-  return div;
+  const agregarCarrito = document.querySelector("#enviarDatos");
+  return agregarCarrito;
 }
 function agregarAlCarrito(producto, carrito) {
   carrito.push(producto.precio);
+  let totalCarrito = carrito.reduce((acumulador, total) => acumulador + total);
+  console.log(totalCarrito);
+  return totalCarrito;
 }
 function guardarStorage(dato) {
   sessionStorage.setItem("total", JSON.stringify(dato));
@@ -138,6 +139,7 @@ const arrayVacio = [];
 const divCards = document.querySelector("#divCards"),
   divProductos = document.querySelector("#divProductos"),
   divIntercambiable = document.querySelectorAll(".main__div"),
+  divCategorias = document.querySelectorAll(".main__div--producto"),
   btnVolver = document.querySelector("#volverInicio"),
   btnVerCarrito = document.querySelector("#verCarrito"),
   divHamburguesa = document.querySelector("#divHamburguesa"),
@@ -154,87 +156,38 @@ const divCards = document.querySelector("#divCards"),
   );
 
 // Selecciona el array por categoria
-function filtarProductos(stock, clasificacion) {
-  return stock.filter((producto) =>
-    producto.clasificacion.includes(clasificacion)
-  );
+function filtarProductos(categoria) {
+  switch (categoria) {
+    case divHamburguesa:
+      return hamburguesas;
+    case divLomo:
+      return lomos;
+    case divPapas:
+      return papas;
+    case divBebida:
+      return bebidas;
+
+    default:
+      break;
+  }
 }
 
+
 // Mostrar div pertinente a la categoria seleccionada
-divHamburguesa.addEventListener("click", () => {
-  reemplazarDiv(divIntercambiable, "d-none"),
-    rellenarDiv(divProductos, filtarProductos(stock, "hamburguesa"));
-    
-  let div1 = 1,
-    div2 = 2,
-    div3 = 3;
+divCategorias.forEach((categoria) =>
+  categoria.addEventListener("click", () => {
+    reemplazarDiv(divIntercambiable, "d-none"),
+      rellenarDiv(divProductos, filtarProductos(categoria));
 
-  crearDiv(div1).addEventListener("click", () => {
-    mostrarProducto(divProductos, seleccionarDiv(div1, hamburguesas));
-    let agregarCarrito = document.querySelector("#enviarDatos");
-    agregarCarrito.addEventListener("click", () => {
-      agregarAlCarrito(seleccionarDiv(div1, hamburguesas), carrito);
-      let totalCarrito = carrito.reduce(
-        (acumulador, total) => acumulador + total
-      );
-      guardarStorage(totalCarrito);
-    });
-  }),
-
-    crearDiv(div2).addEventListener("click", () => {
-      mostrarProducto(divProductos, seleccionarDiv(div2, hamburguesas));
-      let agregarCarrito = document.querySelector("#enviarDatos");
-      agregarCarrito.addEventListener("click", () => {
-        agregarAlCarrito(seleccionarDiv(div2, hamburguesas), carrito);
-        let totalCarrito = carrito.reduce(
-          (acumulador, total) => acumulador + total
-        );
-        guardarStorage(totalCarrito);
-      });
-    }),
-
-    crearDiv(div3).addEventListener("click", () => {
-      mostrarProducto(divProductos, seleccionarDiv(div3, hamburguesas));
-      let agregarCarrito = document.querySelector("#enviarDatos");
-      agregarCarrito.addEventListener("click", () => {
-        agregarAlCarrito(seleccionarDiv(div3, hamburguesas), carrito);
-        let totalCarrito = carrito.reduce(
-          (acumulador, total) => acumulador + total
-        );
-        guardarStorage(totalCarrito);
-      });
-    });
-});
-divLomo.addEventListener("click", () => {
-  reemplazarDiv(divCards, rellenarDiv(divProductos, lomos));
-  let div1 = document.getElementById("1").addEventListener("click", () => {
-      mostrarProducto(divProductos, lomos[0]);
-    }),
-    div2 = document.getElementById("2").addEventListener("click", () => {
-      mostrarProducto(divProductos, lomos[1]);
-    });
-});
-divPapas.addEventListener("click", () => {
-  reemplazarDiv(divCards, rellenarDiv(divProductos, papas));
-  let div1 = document.getElementById("1").addEventListener("click", () => {
-      mostrarProducto(divProductos, papas[0]);
-    }),
-    div2 = document.getElementById("2").addEventListener("click", () => {
-      mostrarProducto(divProductos, papas[1]);
-    });
-});
-divBebida.addEventListener("click", () => {
-  reemplazarDiv(divCards, rellenarDiv(divProductos, bebidas));
-  let div1 = document.getElementById("1").addEventListener("click", () => {
-      mostrarProducto(divProductos, bebidas[0]);
-    }),
-    div2 = document.getElementById("2").addEventListener("click", () => {
-      mostrarProducto(divProductos, bebidas[1]);
-    }),
-    div3 = document.getElementById("3").addEventListener("click", () => {
-      mostrarProducto(divProductos, bebidas[2]);
-    });
-});
+    filtarProductos(categoria).forEach((producto) =>
+      seleccionarDiv(producto.id).addEventListener("click", () =>
+        mostrarProducto(divProductos, producto).addEventListener("click", () =>
+          guardarStorage(agregarAlCarrito(producto, carrito))
+        )
+      )
+    );
+  })
+);
 
 // Boton para volver al inicio del sitio
 btnVolver.addEventListener("click", () => {
@@ -246,7 +199,7 @@ btnVolver.addEventListener("click", () => {
 btnVerCarrito.addEventListener("click", () => {
   let guardado = recuperarStorage("total");
   if (!guardado) {
-    alert("No hay productos en el carrito")
+    alert("No hay productos en el carrito");
   } else {
     alert(`El total a pagar es ${guardado}`);
   }

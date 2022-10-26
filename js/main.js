@@ -155,7 +155,7 @@ const divCards = document.querySelector("#divCards"),
     producto.clasificacion.includes("bebida")
   );
 
-// Selecciona el array por categoria
+// Selecciona el array por categoria y devuelve el array correspondiente
 function filtarProductos(categoria) {
   switch (categoria) {
     case divHamburguesa:
@@ -179,6 +179,7 @@ divCategorias.forEach((categoria) =>
     reemplazarDiv(divIntercambiable, "d-none"),
       rellenarDiv(divProductos, filtarProductos(categoria));
 
+// Recorre cada array que devuelve la funcion de filtrado y le agrega las distintas funcionalidades      
     filtarProductos(categoria).forEach((producto) =>
       seleccionarDiv(producto.id).addEventListener("click", () =>
         mostrarProducto(divProductos, producto).addEventListener("click", () =>
@@ -195,7 +196,7 @@ btnVolver.addEventListener("click", () => {
     rellenarDiv(divProductos, arrayVacio);
 });
 
-// Boton que lanza un alert con los productos que contiene el carrito
+// Boton que lanza un alert con los productos que contiene el carrito (De momento solo muestra el precio total a pagar)
 btnVerCarrito.addEventListener("click", () => {
   let guardado = recuperarStorage("total");
   if (!guardado) {

@@ -11,6 +11,21 @@ function rellenarDiv(div, productos) {
   });
   return div;
 }
+function filtarProductos(categoria) {
+  switch (categoria) {
+    case divHamburguesa:
+      return hamburguesas;
+    case divLomo:
+      return lomos;
+    case divPapas:
+      return papas;
+    case divBebida:
+      return bebidas;
+
+    default:
+      break;
+  }
+}
 function seleccionarDiv(id) {
   switch (id) {
     case 1:
@@ -155,31 +170,14 @@ const divCards = document.querySelector("#divCards"),
     producto.clasificacion.includes("bebida")
   );
 
-// Selecciona el array por categoria y devuelve el array correspondiente
-function filtarProductos(categoria) {
-  switch (categoria) {
-    case divHamburguesa:
-      return hamburguesas;
-    case divLomo:
-      return lomos;
-    case divPapas:
-      return papas;
-    case divBebida:
-      return bebidas;
-
-    default:
-      break;
-  }
-}
-
-
+//Eventos
 // Mostrar div pertinente a la categoria seleccionada
 divCategorias.forEach((categoria) =>
   categoria.addEventListener("click", () => {
     reemplazarDiv(divIntercambiable, "d-none"),
       rellenarDiv(divProductos, filtarProductos(categoria));
 
-// Recorre cada array que devuelve la funcion de filtrado y le agrega las distintas funcionalidades      
+    // Recorre cada array que devuelve la funcion de filtrado y le agrega las distintas funcionalidades
     filtarProductos(categoria).forEach((producto) =>
       seleccionarDiv(producto.id).addEventListener("click", () =>
         mostrarProducto(divProductos, producto).addEventListener("click", () =>

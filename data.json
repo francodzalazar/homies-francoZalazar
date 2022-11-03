@@ -1,0 +1,23 @@
+[
+  {
+    "nombre": "Hamburguesa Simple",
+    "clasificacion": "Hamburguesa",
+    "Precio": 850,
+    "Imagen": "assets/img/hamburguesas/hambur-simple.png",
+    "Id": 1
+  },
+  {
+    "nombre": "Hamburguesa Doble",
+    "clasificacion": "Hamburguesa",
+    "Precio": 950,
+    "Imagen": "assets/img/hamburguesas/hambur-doble.png",
+    "Id": 1
+  },
+  {
+    "nombre": "Hamburguesa Triple",
+    "clasificacion": "Hamburguesa",
+    "Precio": 1050,
+    "Imagen": "assets/img/hamburguesas/hambur-triple.png",
+    "Id": 1
+  }
+]

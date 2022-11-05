@@ -1,0 +1,72 @@
+[
+  {
+    "nombre": "Hamburguesa Simple",
+    "clasificacion": "hamburguesa",
+    "precio": 850,
+    "imagen": "assets/img/hamburguesas/hambur-simple.png",
+    "id": 1
+  },
+  {
+    "nombre": "Hamburguesa Doble",
+    "clasificacion": "hamburguesa",
+    "precio": 950,
+    "imagen": "assets/img/hamburguesas/hambur-doble.png",
+    "id": 2
+  },
+  {
+    "nombre": "Hamburguesa Triple",
+    "clasificacion": "hamburguesa",
+    "precio": 1050,
+    "imagen": "assets/img/hamburguesas/hambur-triple.png",
+    "id": 3
+  },
+  {
+    "nombre": "LOMO SIMPLE",
+    "clasificacion": "lomo",
+    "precio": 1050,
+    "imagen": "assets/img/lomos/lomo-simple.png",
+    "id": 1
+  },
+  {
+    "nombre": "LOMO COMPLETO",
+    "clasificacion": "lomo",
+    "precio": 1150,
+    "imagen": "assets/img/lomos/lomo-completo.png",
+    "id": 2
+  },
+  {
+    "nombre": "PAPAS CHEDDAR",
+    "clasificacion": "papas",
+    "precio": 800,
+    "imagen": "assets/img/papas/papas-beacon.png",
+    "id": 1
+  },
+  {
+    "nombre": "PAPAS HUEVO",
+    "clasificacion": "papas",
+    "precio": 750,
+    "imagen": "assets/img/papas/papas-huevo.png",
+    "id": 2
+  },
+  {
+    "nombre": "AGUA SABORIZADA DE MANZANA 500 ML",
+    "clasificacion": "bebida",
+    "precio": 500,
+    "imagen": "assets/img/bebidas/agua-mzna-500ml.png",
+    "id": 1
+  },
+  {
+    "nombre": "COCA 500 ML",
+    "clasificacion": "bebida",
+    "precio": 500,
+    "imagen": "assets/img/bebidas/coca-500ml.png",
+    "id": 2
+  },
+  {
+    "nombre": "PINTA DE CERVEZA",
+    "clasificacion": "bebida",
+    "precio": 600,
+    "imagen": "assets/img/bebidas/cerveza-500ml.png",
+    "id": 3
+  }
+]

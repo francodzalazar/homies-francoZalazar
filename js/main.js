@@ -1,9 +1,30 @@
-// Funciones
+// Obtencion de datos del data.json
+async function obtenerDatos(categoria) {
+  const respuesta = await fetch("js/data.json");
+  const datos = await respuesta.json();
+  rellenarDiv(divProductos, filtarProductos(categoria, datos));
+}
+// Recorre cada array que devuelve la funcion de filtrado y le agrega las distintas funcionalidades
+async function filtrarDatos(categoria) {
+  const respuesta = await fetch("js/data.json");
+  const datos = await respuesta.json();
+  const filtrado = filtarProductos(categoria, datos);
+  filtrado.forEach((producto) => {
+    seleccionarDiv(producto.id).addEventListener("click", () =>
+      mostrarProducto(divProductos, producto).addEventListener("click", () =>
+        guardarStorage(agregarAlCarrito(producto, carrito))
+      )
+    );
+  });
+}
+
+// Mostrar div pertinente a la categoria seleccionada
 function reemplazarDiv(array, clase) {
   array.forEach((element) => {
     element.classList.toggle(clase);
   });
 }
+// Agrega el contenido al nuevo div
 function rellenarDiv(div, productos) {
   div.innerHTML = "";
   productos.forEach((producto) => {
@@ -11,21 +32,25 @@ function rellenarDiv(div, productos) {
   });
   return div;
 }
-function filtarProductos(categoria) {
+// Filtrado del array
+function filtarProductos(categoria, array) {
   switch (categoria) {
     case divHamburguesa:
-      return hamburguesas;
+      return array.filter(
+        (producto) => producto.clasificacion == "hamburguesa"
+      );
     case divLomo:
-      return lomos;
+      return array.filter((producto) => producto.clasificacion == "lomo");
     case divPapas:
-      return papas;
+      return array.filter((producto) => producto.clasificacion == "papas");
     case divBebida:
-      return bebidas;
+      return array.filter((producto) => producto.clasificacion == "bebida");
 
     default:
       break;
   }
 }
+// Funcionalidades de cada producto
 function seleccionarDiv(id) {
   switch (id) {
     case 1:
@@ -39,13 +64,12 @@ function seleccionarDiv(id) {
       break;
   }
 }
-
 function mostrarProducto(div, producto) {
   div.classList.replace("justify-content-between", "justify-content-center");
   div.innerHTML = `<div id= ${producto.id}><img src=${producto.imagen}> <h4>${producto.nombre}</h4> <h5>$ ${producto.precio}</h5>
   <button id="botonResta">-</button>
   <input type="number" name="" id="inputContador" readonly value="1">
-  <button id="botonSuma">+</button> 
+  <button id="botonSuma">+</button>
   <input type="submit" id="enviarDatos" value="Agregar al carrito">
   </div>`;
   const agregarCarrito = document.querySelector("#enviarDatos");
@@ -54,7 +78,6 @@ function mostrarProducto(div, producto) {
 function agregarAlCarrito(producto, carrito) {
   carrito.push(producto.precio);
   let totalCarrito = carrito.reduce((acumulador, total) => acumulador + total);
-  console.log(totalCarrito);
   return totalCarrito;
 }
 function guardarStorage(dato) {
@@ -63,135 +86,34 @@ function guardarStorage(dato) {
 function recuperarStorage(dato) {
   return JSON.parse(sessionStorage.getItem(dato));
 }
-// Clases
-class Producto {
-  constructor(nombre, clasificacion, precio, imagen, id) {
-    this.nombre = nombre.toUpperCase();
-    this.clasificacion = clasificacion;
-    this.precio = parseFloat(precio);
-    this.imagen = imagen;
-    this.id = id;
-  }
-}
-
 // Arrays
-const stock = [
-  new Producto(
-    "hamburguesa simple",
-    "hamburguesa",
-    850,
-    "assets/img/hamburguesas/hambur-simple.png",
-    1
-  ),
-  new Producto(
-    "hamburguesa doble",
-    "hamburguesa",
-    950,
-    "assets/img/hamburguesas/hambur-doble.png",
-    2
-  ),
-  new Producto(
-    "hamburguesa triple",
-    "hamburguesa",
-    1050,
-    "assets/img/hamburguesas/hambur-triple.png",
-    3
-  ),
-  new Producto(
-    "lomo simple",
-    "lomo",
-    1050,
-    "assets/img/lomos/lomo-simple.png",
-    1
-  ),
-  new Producto(
-    "lomo completo",
-    "lomo",
-    1150,
-    "assets/img/lomos/lomo-completo.png",
-    2
-  ),
-  new Producto(
-    "papas cheddar",
-    "papas",
-    800,
-    "assets/img/papas/papas-beacon.png",
-    1
-  ),
-  new Producto(
-    "papas huevo",
-    "papas",
-    750,
-    "assets/img/papas/papas-huevo.png",
-    2
-  ),
-  new Producto(
-    "agua saborizada de manzana 500 ml",
-    "bebida",
-    500,
-    "assets/img/bebidas/agua-mzna-500ml.png",
-    1
-  ),
-  new Producto(
-    "coca 500 ml",
-    "bebida",
-    500,
-    "assets/img/bebidas/coca-500ml.png",
-    2
-  ),
-  new Producto(
-    "pinta de cerveza",
-    "bebida",
-    600,
-    "assets/img/bebidas/cerveza-500ml.png",
-    3
-  ),
-];
 const carrito = [];
 const arrayVacio = [];
 
 // Variables
 const divCards = document.querySelector("#divCards"),
   divProductos = document.querySelector("#divProductos"),
-  divIntercambiable = document.querySelectorAll(".main__div"),
+  divInicial = document.querySelectorAll(".main__div"),
   divCategorias = document.querySelectorAll(".main__div--producto"),
   btnVolver = document.querySelector("#volverInicio"),
   btnVerCarrito = document.querySelector("#verCarrito"),
   divHamburguesa = document.querySelector("#divHamburguesa"),
   divLomo = document.querySelector("#divLomo"),
   divPapas = document.querySelector("#divPapas"),
-  divBebida = document.querySelector("#divBebida"),
-  hamburguesas = stock.filter((producto) =>
-    producto.clasificacion.includes("hamburguesa")
-  ),
-  lomos = stock.filter((producto) => producto.clasificacion.includes("lomo")),
-  papas = stock.filter((producto) => producto.clasificacion.includes("papas")),
-  bebidas = stock.filter((producto) =>
-    producto.clasificacion.includes("bebida")
-  );
+  divBebida = document.querySelector("#divBebida");
 
-//Eventos
-// Mostrar div pertinente a la categoria seleccionada
+// Ejecucion del programa
 divCategorias.forEach((categoria) =>
   categoria.addEventListener("click", () => {
-    reemplazarDiv(divIntercambiable, "d-none"),
-      rellenarDiv(divProductos, filtarProductos(categoria));
-
-    // Recorre cada array que devuelve la funcion de filtrado y le agrega las distintas funcionalidades
-    filtarProductos(categoria).forEach((producto) =>
-      seleccionarDiv(producto.id).addEventListener("click", () =>
-        mostrarProducto(divProductos, producto).addEventListener("click", () =>
-          guardarStorage(agregarAlCarrito(producto, carrito))
-        )
-      )
-    );
+    reemplazarDiv(divInicial, "d-none"),
+      obtenerDatos(categoria),
+      filtrarDatos(categoria);
   })
 );
 
 // Boton para volver al inicio del sitio
 btnVolver.addEventListener("click", () => {
-  reemplazarDiv(divIntercambiable, "d-none"),
-    rellenarDiv(divProductos, arrayVacio);
+  reemplazarDiv(divInicial, "d-none"), rellenarDiv(divProductos, arrayVacio);
 });
 
 // Boton que lanza un alert con los productos que contiene el carrito (De momento solo muestra el precio total a pagar)

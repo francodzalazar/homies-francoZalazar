@@ -11,9 +11,10 @@ async function filtrarDatos(categoria) {
   const filtrado = filtarProductos(categoria, datos);
   filtrado.forEach((producto) => {
     seleccionarDiv(producto.id).addEventListener("click", () =>
-      mostrarProducto(divProductos, producto).addEventListener("click", () =>
-        guardarStorage(agregarAlCarrito(producto, carrito))
-      )
+      mostrarProducto(divProductos, producto)
+      // .addEventListener("click", () =>
+      //   guardarStorage(agregarAlCarrito(producto, carrito))
+      // )
     );
   });
 }
@@ -67,32 +68,44 @@ function seleccionarDiv(id) {
 function mostrarProducto(div, producto) {
   div.classList.replace("justify-content-between", "justify-content-center");
   div.innerHTML = `<div id= ${producto.id}><img src=${producto.imagen}> <h4>${producto.nombre}</h4> <h5>$ ${producto.precio}</h5>
-  <button id="botonResta">-</button>
-  <input type="number" name="" id="inputContador" readonly value="1">
-  <button id="botonSuma">+</button>
+  <input type="number" name="" id="inputContador" value="1">
   <input type="submit" id="enviarDatos" value="Agregar al carrito">
   </div>`;
   const agregarCarrito = document.querySelector("#enviarDatos");
-  return agregarCarrito;
+  agregarCarrito.onclick = ()=> guardarStorage(agregarAlCarrito(producto, carrito));
+
 }
 function agregarAlCarrito(producto, carrito) {
-  carrito.push(producto.precio);
+  const cantidadProductos = document.querySelector("#inputContador").value;
+  const listadoCarritoNombre = document.querySelector("#carritoNombre");
+  const listadoCarritoPrecio = document.querySelector("#carritoPrecio");
+  let liNombre = document.createElement("li")
+  liNombre.innerText = `${producto.nombre} x${cantidadProductos}`
+  let liPrecio = document.createElement("li")
+  liPrecio.innerText = `$ ${producto.precio*cantidadProductos}`
+  carrito.push(producto.precio*cantidadProductos);
+  console.log(listadoCarritoNombre);
+  listadoCarritoNombre.appendChild(liNombre);
+  listadoCarritoPrecio.appendChild(liPrecio);
   let totalCarrito = carrito.reduce((acumulador, total) => acumulador + total);
+
+
   return totalCarrito;
 }
 function guardarStorage(dato) {
   sessionStorage.setItem("total", JSON.stringify(dato));
 }
 function recuperarStorage(dato) {
-  return JSON.parse(sessionStorage.getItem(dato));
+  let datosCarrito= JSON.parse(sessionStorage.getItem(dato))
+  console.log(datosCarrito);
 }
 // Arrays
 const carrito = [];
-const arrayVacio = [];
 
 // Variables
 const divCards = document.querySelector("#divCards"),
   divProductos = document.querySelector("#divProductos"),
+  divCarrito = document.querySelector("#divCarrito"),
   divInicial = document.querySelectorAll(".main__div"),
   divCategorias = document.querySelectorAll(".main__div--producto"),
   btnVolver = document.querySelector("#volverInicio"),
@@ -113,7 +126,7 @@ divCategorias.forEach((categoria) =>
 
 // Boton para volver al inicio del sitio
 btnVolver.addEventListener("click", () => {
-  reemplazarDiv(divInicial, "d-none"), rellenarDiv(divProductos, arrayVacio);
+  reemplazarDiv(divInicial, "d-none"), rellenarDiv(divProductos, []);
 });
 
 // Boton que lanza un alert con los productos que contiene el carrito (De momento solo muestra el precio total a pagar)

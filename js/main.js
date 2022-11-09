@@ -1,3 +1,21 @@
+// Variables
+const divCards = document.querySelector("#divCards"),
+  divProductos = document.querySelector("#divProductos"),
+  divInicial = document.querySelectorAll(".main__div"),
+  divCategorias = document.querySelectorAll(".main__div--producto"),
+  btnVolver = document.querySelector("#volverInicio"),
+  btnVerCarrito = document.querySelector("#verCarrito"),
+  btnVaciarCarrito = document.querySelector("#btn-vaciar"),
+  btnComprar = document.querySelector("#btn-comprar"),
+  divHamburguesa = document.querySelector("#divHamburguesa"),
+  divLomo = document.querySelector("#divLomo"),
+  divPapas = document.querySelector("#divPapas"),
+  divBebida = document.querySelector("#divBebida"),
+  listadoCarrito = document.querySelector("#listadoCarrito"),
+  totalCarrito = document.querySelector("#totalCarrito");
+// Arrays
+const carrito = [],
+  controlProductos = [];
 // Obtencion de datos del data.json
 async function obtenerDatos(categoria) {
   const respuesta = await fetch("js/data.json");
@@ -10,15 +28,11 @@ async function filtrarDatos(categoria) {
   const datos = await respuesta.json();
   const filtrado = filtarProductos(categoria, datos);
   filtrado.forEach((producto) => {
-    seleccionarDiv(producto.id).addEventListener("click", () =>
-      mostrarProducto(divProductos, producto)
-      // .addEventListener("click", () =>
-      //   guardarStorage(agregarAlCarrito(producto, carrito))
-      // )
-    );
+    document
+      .getElementById(producto.id)
+      .addEventListener("click", () => mostrarProducto(divProductos, producto));
   });
 }
-
 // Mostrar div pertinente a la categoria seleccionada
 function reemplazarDiv(array, clase) {
   array.forEach((element) => {
@@ -33,7 +47,7 @@ function rellenarDiv(div, productos) {
   });
   return div;
 }
-// Filtrado del array
+// Filtrado de productos segun categoria que seleccionemos
 function filtarProductos(categoria, array) {
   switch (categoria) {
     case divHamburguesa:
@@ -52,68 +66,120 @@ function filtarProductos(categoria, array) {
   }
 }
 // Funcionalidades de cada producto
-function seleccionarDiv(id) {
-  switch (id) {
-    case 1:
-      return document.getElementById(id);
-    case 2:
-      return document.getElementById(id);
-    case 3:
-      return document.getElementById(id);
-
-    default:
-      break;
-  }
-}
 function mostrarProducto(div, producto) {
   div.classList.replace("justify-content-between", "justify-content-center");
-  div.innerHTML = `<div id= ${producto.id}><img src=${producto.imagen}> <h4>${producto.nombre}</h4> <h5>$ ${producto.precio}</h5>
-  <input type="number" name="" id="inputContador" value="1">
-  <input type="submit" id="enviarDatos" value="Agregar al carrito">
+  div.innerHTML = `<div>
+  <img src=${producto.imagen}>
+  <h4>${producto.nombre}</h4>
+  <h5>$ ${producto.precio}</h5>
+  <label for="inputContador">Seleccione cantidad</label>
+  <input type="number" name="inputContador" id="inputContador" value="1" class="w-25">
+  <input type="submit" id="enviarDatos" value="Agregar al carrito" class="btn btn-primary">
   </div>`;
   const agregarCarrito = document.querySelector("#enviarDatos");
-  agregarCarrito.onclick = ()=> guardarStorage(agregarAlCarrito(producto, carrito));
-
+  agregarCarrito.addEventListener("click", () => {
+    if (!controlProductos.includes(producto)) {
+      controlProductos.push(producto);
+      guardarStorage(
+        "total",
+        sumaCarrito(producto, carrito),
+        "productos",
+        producto.nombre
+      ),
+        agregarAlDivCarrito(crearDivCarrito(producto), producto.id);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Ya has agregado este producto al carrito",
+      });
+    }
+  });
 }
-function agregarAlCarrito(producto, carrito) {
-  const cantidadProductos = document.querySelector("#inputContador").value;
-  const listadoCarritoNombre = document.querySelector("#carritoNombre");
-  const listadoCarritoPrecio = document.querySelector("#carritoPrecio");
-  let liNombre = document.createElement("li")
-  liNombre.innerText = `${producto.nombre} x${cantidadProductos}`
-  let liPrecio = document.createElement("li")
-  liPrecio.innerText = `$ ${producto.precio*cantidadProductos}`
-  carrito.push(producto.precio*cantidadProductos);
-  console.log(listadoCarritoNombre);
-  listadoCarritoNombre.appendChild(liNombre);
-  listadoCarritoPrecio.appendChild(liPrecio);
-  let totalCarrito = carrito.reduce((acumulador, total) => acumulador + total);
-
-
-  return totalCarrito;
+// Agregar o quitar contenido al carrito
+function crearDivCarrito(producto) {
+  let cantidadProductos = document.querySelector("#inputContador").value;
+  const divCarrito = document.createElement("div");
+  divCarrito.setAttribute(`id`, `div${producto.id}`);
+  divCarrito.classList.add("col-12", "d-flex");
+  divCarrito.innerHTML += `<div class="col-4">${producto.nombre}</div>
+  <div class="col-4">${cantidadProductos} - $ ${
+    producto.precio * cantidadProductos
+  }
+  </div>
+  <div class="col-4">
+  <button id="${
+    producto.id
+  }" class="btn btn-danger mx-5 my-3 btn--eliminar" type="button" >Eliminar</button>
+  </div>`;
+  return divCarrito;
 }
-function guardarStorage(dato) {
-  sessionStorage.setItem("total", JSON.stringify(dato));
+function agregarAlDivCarrito(div, id) {
+  listadoCarrito.appendChild(div);
+  let btnEliminar = document.getElementById(id);
+  btnEliminar.addEventListener("click", () => eliminarProducto(id));
+}
+function eliminarProducto(id) {
+  const buscarId = controlProductos.find((element) => element.id === id);
+  let productosFiltrados = [];
+  console.log(controlProductos);
+  productosFiltrados = controlProductos.filter((idProductos) => {
+    return idProductos !== buscarId;
+  });
+  sessionStorage.clear();
+  carrito.splice(0, carrito.length);
+  controlProductos.splice(0, controlProductos.length);
+  let divBorrar = document.getElementById("div" + id);
+  divBorrar.remove();
+  productosFiltrados.forEach((producto) => controlProductos.push(producto));
+  if (productosFiltrados.length == 0) {
+    guardarStorage("total", 0);
+    return (totalCarrito.textContent = 0);
+  }
+  productosFiltrados.forEach((producto) =>
+    guardarStorage(
+      "total",
+      sumaCarrito(producto, carrito),
+      "productos",
+      producto.nombre
+    )
+  );
+  console.log("Carrito luego de realizar suma nueva " + carrito);
+}
+// Suma de los productos en el carrito
+function sumaCarrito(producto, carrito) {
+  let cantidadProductos = document.querySelector("#inputContador").value;
+  carrito.push(producto.precio * cantidadProductos);
+  let total = carrito.reduce((acumulador, total) => acumulador + total);
+  totalCarrito.textContent = total;
+  console.log("total carrito " + carrito);
+  return total;
+}
+// Se guardan los datos del carrito en storage para su futura utilizacion
+function guardarStorage(key, valor, key2, valor2) {
+  sessionStorage.setItem(key, JSON.stringify(valor));
+  sessionStorage.setItem(key2, JSON.stringify(valor2));
 }
 function recuperarStorage(dato) {
-  let datosCarrito= JSON.parse(sessionStorage.getItem(dato))
-  console.log(datosCarrito);
+  let datosCarrito = JSON.parse(sessionStorage.getItem(dato));
+  return datosCarrito;
 }
-// Arrays
-const carrito = [];
-
-// Variables
-const divCards = document.querySelector("#divCards"),
-  divProductos = document.querySelector("#divProductos"),
-  divCarrito = document.querySelector("#divCarrito"),
-  divInicial = document.querySelectorAll(".main__div"),
-  divCategorias = document.querySelectorAll(".main__div--producto"),
-  btnVolver = document.querySelector("#volverInicio"),
-  btnVerCarrito = document.querySelector("#verCarrito"),
-  divHamburguesa = document.querySelector("#divHamburguesa"),
-  divLomo = document.querySelector("#divLomo"),
-  divPapas = document.querySelector("#divPapas"),
-  divBebida = document.querySelector("#divBebida");
+// Acciones al vaciar carrito o confirmar compra
+function vaciarCarrito() {
+  totalCarrito.textContent = 0;
+  carrito.splice(0, carrito.length);
+  controlProductos.splice(0, controlProductos.length);
+  sessionStorage.clear();
+  listadoCarrito.innerHTML = "";
+}
+function compraExitosa() {
+  vaciarCarrito();
+  Swal.fire({
+    icon: "success",
+    title: "Wujuu!",
+    text: "Compra exitosa",
+  });
+}
 
 // Ejecucion del programa
 divCategorias.forEach((categoria) =>
@@ -129,15 +195,19 @@ btnVolver.addEventListener("click", () => {
   reemplazarDiv(divInicial, "d-none"), rellenarDiv(divProductos, []);
 });
 
-// Boton que lanza un alert con los productos que contiene el carrito (De momento solo muestra el precio total a pagar)
+// Boton para visualizar carrito
 btnVerCarrito.addEventListener("click", () => {
   let guardado = recuperarStorage("total");
-  if (!guardado) {
-    alert("No hay productos en el carrito");
-  } else {
-    alert(`El total a pagar es ${guardado}`);
-  }
+  totalCarrito.textContent = guardado;
 });
 
-// Funcion que borra los datos del sessionStorage cada vez que carga la pagina
-window.onload = () => sessionStorage.clear();
+// boton para vaciar carrito o confirmar compra de productos
+btnVaciarCarrito.addEventListener("click", () => vaciarCarrito());
+btnComprar.addEventListener("click", () => {
+  let alerta = Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: "No existen productos en el carrito",
+  });
+  carrito.length <= 0 ? alerta : compraExitosa();
+});

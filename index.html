@@ -47,35 +47,31 @@
         </div>
         <div class="col-6 m-auto text-center d-flex justify-content-between d-none main__div" id="divProductos">
         </div>
-        <div><button id="volverInicio" class=" d-none main__div">Volver</button></div>
-        <button id="verCarrito" class="btn btn-primary collapsed d-none main__div" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <div><button id="volverInicio" class="btn btn-dark my-1 d-none main__div">Volver</button></div>
+        <button id="verCarrito" class="btn btn-dark my-1 collapsed d-none main__div" type="button"
+            data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
+            aria-controls="collapseExample">
             Ver Carrito
         </button>
         </p>
         <div class="collapse" id="collapseExample">
-            <div class="card card-body">
-                <aside class="col-4">
-                    <h2>Carrito</h2>
-                   <div class="d-flex justify-content-between carrito--div">
-                     <ul id="carritoNombre" class="list-group">
-                         <li>A</li>
-                     </ul>
-                     <ul id="carritoPrecio" class="list-group">
-                         <li>B</li>
-                     </ul>
-                   </div>
-                    <hr>
-                    <p class="text-right">Total: <span id="total"></span>$</p>
-                    <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
-                </aside>
-            </div>
+            <aside class="card card-body col-4">
+                <h2>Carrito</h2>
+                <div id="listadoCarrito" class="d-flex flex-wrap justify-content-between carrito--div">
+                </div>
+                <hr>
+                <p class="text-right">Total: $ <span id="totalCarrito"></span></p>
+                <div class="d-flex justify-content-between">
+                    <button id="btn-comprar" class="btn btn-success w-50">Finalzar compra</button>
+                    <button id="btn-vaciar" class="btn btn-danger w-25">Vaciar</button>                    
+                </div>
+            </aside>
         </div>
-
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/main.js"></script>
 </body>
 

@@ -25,48 +25,48 @@
     "clasificacion": "lomo",
     "precio": 1050,
     "imagen": "assets/img/lomos/lomo-simple.png",
-    "id": 1
+    "id": 4
   },
   {
     "nombre": "LOMO COMPLETO",
     "clasificacion": "lomo",
     "precio": 1150,
     "imagen": "assets/img/lomos/lomo-completo.png",
-    "id": 2
+    "id": 5
   },
   {
     "nombre": "PAPAS CHEDDAR",
     "clasificacion": "papas",
     "precio": 800,
     "imagen": "assets/img/papas/papas-beacon.png",
-    "id": 1
+    "id": 6
   },
   {
     "nombre": "PAPAS HUEVO",
     "clasificacion": "papas",
     "precio": 750,
     "imagen": "assets/img/papas/papas-huevo.png",
-    "id": 2
+    "id": 7
   },
   {
     "nombre": "AGUA SABORIZADA DE MANZANA 500 ML",
     "clasificacion": "bebida",
     "precio": 500,
     "imagen": "assets/img/bebidas/agua-mzna-500ml.png",
-    "id": 1
+    "id": 8
   },
   {
     "nombre": "COCA 500 ML",
     "clasificacion": "bebida",
     "precio": 500,
     "imagen": "assets/img/bebidas/coca-500ml.png",
-    "id": 2
+    "id": 9
   },
   {
     "nombre": "PINTA DE CERVEZA",
     "clasificacion": "bebida",
     "precio": 600,
     "imagen": "assets/img/bebidas/cerveza-500ml.png",
-    "id": 3
+    "id": 10
   }
 ]

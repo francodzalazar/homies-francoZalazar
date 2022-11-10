@@ -18,13 +18,13 @@ const carrito = [],
   controlProductos = [];
 // Obtencion de datos del data.json
 async function obtenerDatos(categoria) {
-  const respuesta = await fetch("js/data.json");
+  const respuesta = await fetch(`js/data.json`);
   const datos = await respuesta.json();
   rellenarDiv(divProductos, filtarProductos(categoria, datos));
 }
 // Recorre cada array que devuelve la funcion de filtrado y le agrega las distintas funcionalidades
 async function filtrarDatos(categoria) {
-  const respuesta = await fetch("js/data.json");
+  const respuesta = await fetch(`js/data.json`);
   const datos = await respuesta.json();
   const filtrado = filtarProductos(categoria, datos);
   filtrado.forEach((producto) => {
@@ -80,12 +80,7 @@ function mostrarProducto(div, producto) {
   agregarCarrito.addEventListener("click", () => {
     if (!controlProductos.includes(producto)) {
       controlProductos.push(producto);
-      guardarStorage(
-        "total",
-        sumaCarrito(producto, carrito),
-        "productos",
-        producto
-      ),
+      guardarStorage("total", sumaCarrito(producto, carrito)),
         agregarAlDivCarrito(crearDivCarrito(producto), producto.id);
     } else {
       Swal.fire({
@@ -154,22 +149,14 @@ function sumaCarrito(producto, carrito) {
   return total;
 }
 // Se guardan los datos del carrito en storage para su futura utilizacion
-function guardarStorage(key, valor, key2, valor2) {
-  let arrayStorage = JSON.parse(sessionStorage.getItem(key2)) || [];
-  arrayStorage.push(valor2);
+function guardarStorage(key, valor) {
   sessionStorage.setItem(key, JSON.stringify(valor));
-  sessionStorage.setItem(key2, JSON.stringify(arrayStorage));
   recuperarTotalStorage("total");
-  recuperarProductoStorage("productos");
 }
-// Funciones que recuperan los datos del
+// Funciones que recuperan los datos del storage
 function recuperarTotalStorage(dato) {
   let datosCarrito = JSON.parse(sessionStorage.getItem(dato));
   return datosCarrito;
-}
-function recuperarProductoStorage(dato) {
-  let productosCarrito = JSON.parse(sessionStorage.getItem(dato));
-  return productosCarrito;
 }
 // Acciones al vaciar carrito o confirmar compra
 function vaciarCarrito() {
@@ -187,21 +174,7 @@ function compraExitosa() {
     text: "Compra exitosa",
   });
 }
-function recuperarDivCarrito(producto) {
-  if (!controlProductos.includes(producto)) {
-    controlProductos.push(producto);
-  }
-  const divCarrito = document.createElement("div");
-  divCarrito.setAttribute(`id`, `div${producto.id}`);
-  divCarrito.classList.add("col-12", "d-flex");
-  divCarrito.innerHTML += `<div class="col-4">${producto.nombre}</div>
-  <div class="col-4"> - $ ${producto.precio}
-  </div>
-  <div class="col-4">
-  <button id="${producto.id}" class="btn btn-danger mx-5 my-3 btn--eliminar" type="button" >Eliminar</button>
-  </div>`;
-  return divCarrito;
-}
+
 // Ejecucion del programa
 divCategorias.forEach((categoria) =>
   categoria.addEventListener("click", () => {
@@ -220,12 +193,6 @@ btnVolver.addEventListener("click", () => {
 btnVerCarrito.addEventListener("click", () => {
   let guardado = recuperarTotalStorage("total");
   totalCarrito.textContent = guardado;
-  let productosGuardados = recuperarProductoStorage("productos");
-  listadoCarrito.innerHTML = "";
-  totalCarrito.value = guardado;
-  productosGuardados.forEach((producto) =>
-    agregarAlDivCarrito(recuperarDivCarrito(producto), producto.id)
-  );
 });
 
 // boton para vaciar carrito o confirmar compra de productos

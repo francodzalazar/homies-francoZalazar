@@ -84,7 +84,7 @@ function mostrarProducto(div, producto) {
         "total",
         sumaCarrito(producto, carrito),
         "productos",
-        producto.nombre
+        producto
       ),
         agregarAlDivCarrito(crearDivCarrito(producto), producto.id);
     } else {
@@ -98,7 +98,7 @@ function mostrarProducto(div, producto) {
 }
 // Agregar o quitar contenido al carrito
 function crearDivCarrito(producto) {
-  let cantidadProductos = document.querySelector("#inputContador").value;
+  let cantidadProductos = document.querySelector("#inputContador").value || 1;
   const divCarrito = document.createElement("div");
   divCarrito.setAttribute(`id`, `div${producto.id}`);
   divCarrito.classList.add("col-12", "d-flex");
@@ -144,7 +144,6 @@ function eliminarProducto(id) {
       producto.nombre
     )
   );
-  console.log("Carrito luego de realizar suma nueva " + carrito);
 }
 // Suma de los productos en el carrito
 function sumaCarrito(producto, carrito) {
@@ -152,17 +151,25 @@ function sumaCarrito(producto, carrito) {
   carrito.push(producto.precio * cantidadProductos);
   let total = carrito.reduce((acumulador, total) => acumulador + total);
   totalCarrito.textContent = total;
-  console.log("total carrito " + carrito);
   return total;
 }
 // Se guardan los datos del carrito en storage para su futura utilizacion
 function guardarStorage(key, valor, key2, valor2) {
+  let arrayStorage = JSON.parse(sessionStorage.getItem(key2)) || [];
+  arrayStorage.push(valor2);
   sessionStorage.setItem(key, JSON.stringify(valor));
-  sessionStorage.setItem(key2, JSON.stringify(valor2));
+  sessionStorage.setItem(key2, JSON.stringify(arrayStorage));
+  recuperarTotalStorage("total");
+  recuperarProductoStorage("productos");
 }
-function recuperarStorage(dato) {
+// Funciones que recuperan los datos del
+function recuperarTotalStorage(dato) {
   let datosCarrito = JSON.parse(sessionStorage.getItem(dato));
   return datosCarrito;
+}
+function recuperarProductoStorage(dato) {
+  let productosCarrito = JSON.parse(sessionStorage.getItem(dato));
+  return productosCarrito;
 }
 // Acciones al vaciar carrito o confirmar compra
 function vaciarCarrito() {
@@ -180,7 +187,21 @@ function compraExitosa() {
     text: "Compra exitosa",
   });
 }
-
+function recuperarDivCarrito(producto) {
+  if (!controlProductos.includes(producto)) {
+    controlProductos.push(producto);
+  }
+  const divCarrito = document.createElement("div");
+  divCarrito.setAttribute(`id`, `div${producto.id}`);
+  divCarrito.classList.add("col-12", "d-flex");
+  divCarrito.innerHTML += `<div class="col-4">${producto.nombre}</div>
+  <div class="col-4"> - $ ${producto.precio}
+  </div>
+  <div class="col-4">
+  <button id="${producto.id}" class="btn btn-danger mx-5 my-3 btn--eliminar" type="button" >Eliminar</button>
+  </div>`;
+  return divCarrito;
+}
 // Ejecucion del programa
 divCategorias.forEach((categoria) =>
   categoria.addEventListener("click", () => {
@@ -197,8 +218,14 @@ btnVolver.addEventListener("click", () => {
 
 // Boton para visualizar carrito
 btnVerCarrito.addEventListener("click", () => {
-  let guardado = recuperarStorage("total");
+  let guardado = recuperarTotalStorage("total");
   totalCarrito.textContent = guardado;
+  let productosGuardados = recuperarProductoStorage("productos");
+  listadoCarrito.innerHTML = "";
+  totalCarrito.value = guardado;
+  productosGuardados.forEach((producto) =>
+    agregarAlDivCarrito(recuperarDivCarrito(producto), producto.id)
+  );
 });
 
 // boton para vaciar carrito o confirmar compra de productos
